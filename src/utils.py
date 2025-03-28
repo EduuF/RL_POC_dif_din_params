@@ -4,6 +4,7 @@ import numpy as np
 from typing import List, Dict
 from dotenv import load_dotenv
 import os
+import random
 
 from params import FOV_PLAYER
 
@@ -158,6 +159,9 @@ def move_enemies(grid: np.ndarray, player: Player):
 
             # Se a célula estiver vazia, não há inimigo para mover
             if grid[ex][ey] == 0:
+                continue
+
+            if random.random() < max(0, (player.Velocidade - 1)):
                 continue
 
             enemy = grid[ex][ey]

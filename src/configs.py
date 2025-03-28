@@ -33,7 +33,7 @@ SHAPES = {
 player_status = {
     "Life": 100.0,
     "Dinheiro": 100.0,
-    "Velocidade": 1.0,
+    "Velocidade": 1.5,
     "Forca": 2.0,
     "Precisao": 60.0,
     "Armadura": 1.0,
