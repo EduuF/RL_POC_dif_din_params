@@ -8,9 +8,7 @@ class Player:
         self.Velocidade = player_status['Velocidade']
         self.Forca = player_status['Forca']
         self.Precisao = player_status['Precisao']
-        self.Magia = player_status['Magia']
         self.Armadura = player_status['Armadura']
-        self.Escudo_magico = player_status['Escudo Magico']
         self.debuffed = False
         self.debuff_turns_left = 0
         self.debuff_percentage = 0
@@ -21,13 +19,12 @@ class Player:
 
     def get_player_status(self):
         player_status = {
+            "Life": self.Life,
             "Dinheiro": self.Dinheiro,
             "Velocidade": self.Velocidade * (1-self.debuff_percentage),
             "Forca": self.Forca * (1-self.debuff_percentage),
             "Precisao": self.Precisao * (1-self.debuff_percentage),
-            "Magia": self.Magia * (1-self.debuff_percentage),
-            "Armadura": self.Armadura * (1-self.debuff_percentage),
-            "Escudo Magico": self.Escudo_magico * (1-self.debuff_percentage)
+            "Armadura": self.Armadura * (1-self.debuff_percentage)
         }
         return player_status
 

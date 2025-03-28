@@ -5,17 +5,14 @@ import os
 
 from Player.player import Player
 from Boss.boss import Boss
-from params import SAFE_ZONE_RADIUS, NUM_MINION_ARQUEIRO, NUM_MINION_GUERREIRO, NUM_MINION_MAGO, NUM_TRAP_DEBUFF, NUM_TRAP_STUN, STUN_TURNS, DEBUFF_TURNS
-from utils import find_places_randomly, move_player, place_elements_on_board
+from params import SAFE_ZONE_RADIUS, NUM_MINION_ARQUEIRO, NUM_MINION_GUERREIRO, NUM_TRAP_DEBUFF, NUM_TRAP_STUN, STUN_TURNS, DEBUFF_TURNS
+from utils import find_places_randomly, move_player, place_elements_on_board, move_enemies
 from grid.utils import draw_grid
 from Minions.minion_arqueiro import Minion_arqueiro
 from Minions.minion_guerreiro import Minion_guerreiro
-from Minions.minion_mago import Minion_mago
 from Traps.stun_trap import Stun_trap
 from Traps.debuff_trap import Debuff_trap
-
-
-
+from combat.utils import search_fight
 
 # Definições básicas
 GRID_SIZE = int(os.getenv('GRID_SIZE'))
@@ -35,7 +32,6 @@ clock = pygame.time.Clock()
 font = pygame.font.SysFont(None, 24)
 
 # Inicializa o grid
-#grid = np.zeros((GRID_SIZE, GRID_SIZE), dtype=int)
 grid = [[0] * GRID_SIZE for _ in range(GRID_SIZE)]
 
 # Posiciona o player e o boss
@@ -53,7 +49,6 @@ traps_id_counter = 0
 
 # Posiciona minions Arqueiros
 arqueiros_positions = find_places_randomly(2, NUM_MINION_ARQUEIRO, GRID_SIZE, SAFE_ZONE_RADIUS, grid)
-print(f'Aqui')
 for position_tuple in arqueiros_positions:
     enemies[enemies_id_counter] = (Minion_arqueiro(enemies_id_counter, position_tuple))
     enemies_id_counter += 1
@@ -62,12 +57,6 @@ for position_tuple in arqueiros_positions:
 guerreiros_positions = find_places_randomly(3, NUM_MINION_GUERREIRO, GRID_SIZE, SAFE_ZONE_RADIUS, grid)
 for position_tuple in guerreiros_positions:
     enemies[enemies_id_counter] = (Minion_guerreiro(enemies_id_counter, position_tuple))
-    enemies_id_counter += 1
-
-# Posiciona Minions Magos
-magos_positions = find_places_randomly(4, NUM_MINION_MAGO, GRID_SIZE, SAFE_ZONE_RADIUS, grid)
-for position_tuple in magos_positions:
-    enemies[enemies_id_counter] = (Minion_mago(enemies_id_counter, position_tuple))
     enemies_id_counter += 1
 
 # Posiciona Debuff Traps
@@ -93,6 +82,9 @@ for key, item in traps.items():
 
 # Variáveis de monitoramento
 turn_count = 0
+potions_used = 0
+time_taken = 0
+
 
 running = True
 while running:
@@ -115,6 +107,14 @@ while running:
                 grid = move_player(-1, 0, grid, player)
             elif event.key == pygame.K_RIGHT:
                 grid = move_player(1, 0, grid, player)
+
+
+
+            grid = move_enemies(grid, player)
+            grid = search_fight(grid, player)
+
+
+
 
             print(f'stun_turns_left | debuff_turns_left | turn_count {player.get_stun_turns_left()} | {player.get_debuff_turns_left()} | {turn_count}')
 

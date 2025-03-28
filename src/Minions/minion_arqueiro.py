@@ -12,15 +12,14 @@ class Minion_arqueiro(Base_minion):
         self.Velocidade = minion_arqueiro_status['Velocidade']
         self.Forca = minion_arqueiro_status['Forca']
         self.Precisao = minion_arqueiro_status['Precisao']
-        self.Magia = minion_arqueiro_status['Magia']
         self.Armadura = minion_arqueiro_status['Armadura']
-        self.Escudo_magico = minion_arqueiro_status['Escudo Magico']
 
         # Definir atributos específicos do Minion Arqueiro
         self.type = 2
         self.Meelee = False
         self.Distance = True
         self.pos = minion_pos
+
 
 
 

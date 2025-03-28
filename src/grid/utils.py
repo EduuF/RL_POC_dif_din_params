@@ -6,7 +6,7 @@ import os
 
 from utils import draw_shape
 from configs import COLORS, SHAPES, player_status, ELEMENTS
-from params import SAFE_ZONE_RADIUS, DEBUFF_PERCENTAGE, DEBUFF_TURNS, STUN_TURNS, NUM_MINION_ARQUEIRO, NUM_MINION_GUERREIRO, NUM_MINION_MAGO, NUM_TRAP_DEBUFF, NUM_TRAP_STUN
+from params import SAFE_ZONE_RADIUS, DEBUFF_PERCENTAGE, DEBUFF_TURNS, STUN_TURNS, NUM_MINION_ARQUEIRO, NUM_MINION_GUERREIRO, NUM_TRAP_DEBUFF, NUM_TRAP_STUN
 
 load_dotenv()
 
@@ -27,10 +27,13 @@ def draw_grid(screen: pygame.surface.Surface, player_status: Dict, grid: List, f
     for y in range(GRID_SIZE):
         for x in range(GRID_SIZE):
             # Se for int é pq é vazio (0), se não, é objeto
-            if isinstance(grid[y][x], int):
-                draw_shape(screen, SHAPES[grid[y][x]], COLORS[grid[y][x]], x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE)
+            if isinstance(grid[x][y], int):
+                draw_shape(screen, SHAPES[grid[x][y]], COLORS[grid[x][y]], x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE)
             else:
-                draw_shape(screen, SHAPES[grid[y][x].type], COLORS[grid[y][x].type], x * CELL_SIZE, y * CELL_SIZE,CELL_SIZE)
+                if grid[x][y].type in [2,3,4,5,6]:
+                    draw_shape(screen, SHAPES[grid[x][y].type], COLORS[grid[x][y].type], x * CELL_SIZE, y * CELL_SIZE,CELL_SIZE, grid[x][y].id, font)
+                else:
+                    draw_shape(screen, SHAPES[grid[x][y].type], COLORS[grid[x][y].type], x * CELL_SIZE, y * CELL_SIZE,CELL_SIZE)
 
     draw_status_panel(screen, player_status, font)
     draw_legend_panel(screen, font)
